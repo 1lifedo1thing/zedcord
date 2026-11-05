@@ -17,11 +17,9 @@
 /* midnight base + zed layer (inlined by scripts/build.js) */
 @import url('https://refact0r.github.io/zedcord/build/zedcord.css');
 
-/* zed "Rosé Pine" (the rose-pine-theme extension, themes/rose-pine.json; copy in research/). token names and
-   their zed keys are listed in theme/zedcord.theme.css */
+/* zed "Rosé Pine" (rose-pine-theme extension, copy in research/). token keys are in theme/zedcord.theme.css */
 :root {
-    /* surfaces: unlike one dark, the title bar, status bar and panels are the editor colour, and the tab bar is
-       the lighter surface */
+    /* surfaces: title bar, status bar and panels use the editor colour, the tab bar is lighter */
     --zed-title-bar: #191724;
     --zed-status-bar: #191724;
     --zed-panel: #191724;
@@ -76,12 +74,12 @@
     --zed-syntax-emphasis: #c4a7e7;
     --zed-syntax-emphasis-strong: #9ccfd8;
 
-    /* discord-only: server icon tiles. rosé pine's `background` is the panel colour, so they take the resting
-       button fill (ghost_element.background) instead */
+    /* discord-only: server icon tiles. rosé pine's `background` is the panel colour, so use
+       ghost_element.background */
     --zed-guild-icon: #21202e;
 
-    /* accents, 2 = the theme's value: love (error), pine (success), foam (accent), gold (warning), iris.
-       1 and 3-5 keep one dark's lightness and chroma steps */
+    /* accents. 2 is the theme's value: love, pine, foam, gold, iris. other steps keep one dark's lightness and
+       chroma */
     --red-1: #f997b0;
     --red-2: #eb6f92;
     --red-3: #e0527f;

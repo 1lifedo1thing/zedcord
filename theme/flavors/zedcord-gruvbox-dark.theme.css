@@ -17,10 +17,10 @@
 /* midnight base + zed layer (inlined by scripts/build.js) */
 @import url('https://refact0r.github.io/zedcord/build/zedcord.css');
 
-/* zed "Gruvbox Dark" (built in: assets/themes/gruvbox/gruvbox.json; copy in research/). token names and their zed
-   keys are listed in theme/zedcord.theme.css */
+/* zed "Gruvbox Dark" (assets/themes/gruvbox/gruvbox.json, copy in research/). token keys are in
+   theme/zedcord.theme.css */
 :root {
-    /* surfaces: laid out like one dark (zed's built-in themes share a template) */
+    /* surfaces: laid out like one dark */
     --zed-title-bar: #4c4642;
     --zed-status-bar: #4c4642;
     --zed-panel: #3a3735;
@@ -76,8 +76,7 @@
     /* discord-only: server icon tiles (`background`, as in one dark) */
     --zed-guild-icon: #4c4642;
 
-    /* accents, 2 = the theme's value: error, success, accent, warning, and bright magenta (the tier the others are
-       in). 1 and 3-5 keep one dark's lightness and chroma steps (red-4 comes out near gruvbox's own dark red, #cc241d) */
+    /* accents. 2 is the theme's value, purple is bright magenta. other steps keep one dark's lightness and chroma */
     --red-1: #ff8471;
     --red-2: #fb4a35;
     --red-3: #ee1900;

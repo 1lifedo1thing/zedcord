@@ -1,6 +1,6 @@
-/* buttons, inputs, switches, checkboxes, tab-like toggles — zed controls (metrics: research/zed-spec.md §3.1, §3.4) */
+/* buttons, inputs, switches, checkboxes, toggles, sliders */
 
-/* ---------- tokens: discord's control variables -> zed's button styles ---------- */
+/* tokens: discord's control variables -> zed button styles */
 
 /* same scope as midnight's mapping, so these win by source order */
 body,
@@ -167,13 +167,12 @@ body,
 
     --slider-track-background: var(--zed-element-hover);
 
-    /* compact metrics: inputs 32 (zed's search bar min-h). --select-option-height stays 40: the
-       dropdown list is virtualised with a fixed 40px row in js */
+    /* inputs 32px like zed's search bar. --select-option-height stays 40, the dropdown is virtualized at 40px */
     --control-input-height-md: 32px;
     --control-input-height-sm: 28px;
 }
 
-/* ---------- buttons (new system): radius 4, 14px/400, heights 22 / 28 / 32 ---------- */
+/* buttons (new system) */
 
 .button_a22cb0 {
     border-radius: var(--zed-radius-sm);
@@ -252,7 +251,7 @@ body,
     color: var(--zed-text-accent);
 }
 
-/* ---------- buttons (old system) ---------- */
+/* buttons (old system) */
 
 .button__201d5:not(.lookBlank__201d5) {
     border-radius: var(--zed-radius-sm);
@@ -324,7 +323,7 @@ body,
     color: var(--red-2);
 }
 
-/* ---------- text inputs: radius 6, 1px border, focused = border colour only ---------- */
+/* text inputs */
 
 .wrapper__72c38 {
     --custom-input-border-radius: var(--zed-radius-md);
@@ -353,7 +352,7 @@ body,
     padding-inline-start: 2px;
 }
 
-/* ---------- selects ---------- */
+/* selects */
 
 .selectField__0edde .selectButton__0edde,
 .selectField__0edde .listBoxItemContent__2e223.inInput__2e223 {
@@ -376,7 +375,7 @@ body,
     font-size: var(--zed-ui-font-size);
 }
 
-/* ---------- switches: zed's Switch, 32x20 track, 12px thumb ---------- */
+/* switches */
 
 /* discord animates the track colour and thumb position with inline styles, hence !important */
 .container_a28278:has(input) .switchIndicator_a28278.switchIndicator_a28278 {
@@ -428,7 +427,7 @@ body,
     outline-offset: 2px;
 }
 
-/* ---------- checkboxes: 16px box, radius 2, accent check ---------- */
+/* checkboxes */
 
 .checkboxIndicator__714a9 {
     border-radius: 2px;
@@ -437,7 +436,7 @@ body,
     border-radius: 2px;
 }
 
-/* ---------- radios ---------- */
+/* radios */
 
 .radioGroupOption__64e61 {
     --custom-radio-size: 16px;
@@ -451,7 +450,7 @@ body,
     gap: 8px;
 }
 
-/* ---------- form fields (label + description + control) ---------- */
+/* form fields */
 
 .label__5a838 {
     font-size: var(--zed-ui-font-size);
@@ -464,7 +463,7 @@ body,
     color: var(--zed-text-muted) !important; /* inline var(--text-subtle) */
 }
 
-/* ---------- tab bars: friends header (Online / All / Pending / Add Friend) ---------- */
+/* tab bars (friends header) */
 
 /* zed's ToggleButton group: ghost 22px buttons, selected = element.selected */
 .topPill_aa8da2 .item_aa8da2 {
@@ -491,7 +490,7 @@ body,
         color: var(--zed-text);
     }
 }
-/* "Add Friend" is the one accent action: Tinted(Accent). discord styles it with a 4-class selector */
+/* "Add Friend" is the one accent action: Tinted(Accent) */
 .tabBar__133bf .item_aa8da2.addFriend__133bf.addFriend__133bf.addFriend__133bf {
     margin-left: 8px;
     background-color: var(--ctl-accent-bg);
@@ -511,7 +510,7 @@ body,
     color: var(--zed-text-accent);
 }
 
-/* ---------- sliders: hairline track, soft accent fill, small light thumb (like the switch) ---------- */
+/* sliders */
 
 .slider_d061ce {
     --grabber-size: 14px;

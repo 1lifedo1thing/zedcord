@@ -17,8 +17,7 @@
 /* midnight base + zed layer (inlined by scripts/build.js) */
 @import url('https://refact0r.github.io/zedcord/build/zedcord.css');
 
-/* zed "One Dark" (assets/themes/one/one.json). each token is a key of zed's theme schema (named in the comments),
-   so another zed theme ports by copying its values: see theme/flavors/ */
+/* zed "One Dark" (assets/themes/one/one.json). each token's comment is its zed theme key */
 :root {
     /* surfaces */
     --zed-title-bar: #3b414d; /* title_bar.background */
@@ -78,10 +77,10 @@
     --zed-syntax-emphasis: #74ade8;
     --zed-syntax-emphasis-strong: #bf956a;
 
-    /* discord-only, no zed key: server icon tiles without an image (one dark's `background`, its lightest chrome) */
+    /* discord-only: server icon tiles without an image (one dark's `background`) */
     --zed-guild-icon: #3b414d;
 
-    /* accents, 2 = the theme's value (error, success, info/accent, warning, keyword) */
+    /* accents. 2 is the theme's value (error, success, accent, warning, keyword) */
     --red-1: #e0959a;
     --red-2: #d07277;
     --red-3: #c45a60;

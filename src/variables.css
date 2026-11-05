@@ -1,6 +1,4 @@
-/* shared variables: zed's metrics, the midnight options this theme relies on, the forced density, and midnight's
-   palette mapped onto the zed colour tokens. the colours themselves (--zed-* tokens, accent scales) live in the
-   theme files: theme/zedcord.theme.css (one dark) and theme/flavors/*.theme.css */
+/* shared variables. colours (--zed-* tokens, accent scales) are in theme/zedcord.theme.css and theme/flavors/ */
 
 body {
     --font: 'IBM Plex Sans';
@@ -11,8 +9,7 @@ body {
     --zed-ui-font-size: 14px; /* LabelSize::Default at ui_font_size 16 */
     --zed-ui-font-size-sm: 12px; /* LabelSize::Small */
     --zed-ui-font-size-xs: 10px; /* LabelSize::XSmall: people rows' second line */
-    /* the tab bar's 32px, with the line under it (main.css). vesktop puts the macOS traffic lights 10pt down, so
-       they're centred at 100% zoom, and on macOS the bar never renders shorter than that */
+    /* tab bar height plus its border. vesktop centres the macOS traffic lights in it at 100% zoom */
     --zed-title-bar-height: var(--zed-tab-bar-height);
     --zed-tab-bar-height: 32px;
     --zed-indent: 20px;
@@ -41,10 +38,8 @@ body {
     --bg-floating: var(--zed-elevated-surface);
 }
 
-/* density: discord's compact spacing scale and a smaller chat, forced so the theme looks the same whatever
-   accessibility > ui density, chat font scaling and message group spacing are set to. declared on the root,
-   where discord declares them, so its root-level derived variables recompute; :root:root outranks the
-   .density-* classes on <html>. */
+/* density: force compact spacing and a smaller chat regardless of discord's accessibility settings. :root:root
+   outranks the .density-* classes on <html> */
 :root:root {
     --space-xxs: var(--space-4);
     --space-xs: var(--space-6);

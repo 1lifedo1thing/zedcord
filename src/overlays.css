@@ -1,6 +1,6 @@
-/* menus, tooltips, popouts, modals — zed elevated surfaces */
+/* menus, tooltips, popouts, modals */
 
-/* zed's elevation shadows (research/zed-spec.md §3.1 "Elevation") */
+/* zed's elevation shadows */
 body {
     /* elevation_2: context menu, tooltip, popover */
     --ovl-shadow: 0 2px 3px hsl(0 0% 0% / 0.12), 0 1px 0 hsl(0 0% 0% / 0.06);
@@ -9,7 +9,7 @@ body {
         0 1px 0 hsl(0 0% 0% / 0.12);
 }
 
-/* ---------- modals (elevation_3) ---------- */
+/* modals */
 
 /* zed washes the window with the elevated surface at 80% */
 .scrim__40128 {
@@ -26,7 +26,7 @@ body {
     }
 }
 
-/* tighter, zed-like spacing (modal header px 12, body gap 8) */
+/* tighter spacing (header px 12, body gap 8) */
 .container__8a031.padding-size-sm__8a031,
 .container__8a031.padding-size-lg__8a031 {
     --custom-modal-padding: 16px;
@@ -55,7 +55,7 @@ body {
     border-bottom-color: var(--zed-border-variant);
 }
 
-/* ---------- user settings (zed's settings window: panel nav + editor content) ---------- */
+/* user settings, like zed's settings window */
 
 .modal_e44912 .modalContentInner_e44912 {
     background-color: var(--zed-editor);
@@ -223,7 +223,7 @@ body {
     font-weight: 600;
 }
 
-/* ---------- context menus (zed's ContextMenu: elevation_2, inset 4px rows) ---------- */
+/* context menus */
 
 .menu_c1e9c4 {
     --custom-menu-separator-margin: 6px 0;
@@ -291,7 +291,7 @@ body {
     color: var(--zed-text-muted);
 }
 
-/* states: hover/keyboard focus = ghost hover, pressed = ghost active */
+/* hover / focus = ghost hover, pressed = ghost active */
 .menu_c1e9c4 .colorDefault_c1e9c4 .label_c1e9c4 {
     color: var(--zed-text);
 }
@@ -380,7 +380,7 @@ body {
     border-color: var(--zed-border-focused);
 }
 
-/* ---------- tooltips (zed's tooltip_container: elevation_2, py 4 px 8, 14px, no caret) ---------- */
+/* tooltips */
 
 .tooltip_fa450d {
     gap: 8px;
@@ -445,7 +445,7 @@ body {
     color: var(--green-2);
 }
 
-/* ---------- profile popouts (popover = elevation_2) ---------- */
+/* profile popouts */
 
 .outer_c0bea0.user-profile-popout {
     border-color: var(--zed-border-variant);
@@ -565,7 +565,7 @@ body {
     color: var(--zed-text-muted);
 }
 
-/* ---------- select dropdowns / list boxes (a context menu) ---------- */
+/* select dropdowns (styled as a context menu) */
 
 .selectDropdown__0edde {
     background-color: var(--zed-elevated-surface);

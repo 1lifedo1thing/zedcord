@@ -17,10 +17,9 @@
 /* midnight base + zed layer (inlined by scripts/build.js) */
 @import url('https://refact0r.github.io/zedcord/build/zedcord.css');
 
-/* zed "Ayu Dark" (built in: assets/themes/ayu/ayu.json; copy in research/). token names and their zed keys are
-   listed in theme/zedcord.theme.css */
+/* zed "Ayu Dark" (assets/themes/ayu/ayu.json, copy in research/). token keys are in theme/zedcord.theme.css */
 :root {
-    /* surfaces: laid out like one dark (zed's built-in themes share a template), with a much darker editor */
+    /* surfaces: laid out like one dark, with a much darker editor */
     --zed-title-bar: #313337;
     --zed-status-bar: #313337;
     --zed-panel: #1f2127;
@@ -76,8 +75,8 @@
     /* discord-only: server icon tiles (`background`, as in one dark) */
     --zed-guild-icon: #313337;
 
-    /* accents, 2 = the theme's value: error, success, accent, warning, and the constant purple (ayu's terminal
-       "magenta" is cyan). 1 and 3-5 keep one dark's lightness and chroma steps */
+    /* accents. 2 is the theme's value, purple is constant (ayu's "magenta" is cyan). other steps keep one dark's
+       lightness and chroma */
     --red-1: #fd999b;
     --red-2: #ef7177;
     --red-3: #e45460;
