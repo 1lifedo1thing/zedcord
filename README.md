@@ -1,10 +1,10 @@
-<img src="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/preview.png">
+<img src="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/rose-pine.png">
 
 # zedcord
 
 discord, but it's [zed](https://zed.dev). built on [midnight](https://github.com/refact0r/midnight-discord).
 
-pictured: zedcord next to zed, both in rosé pine. the default theme file uses zed's default, one dark.
+<img src="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/compare/one-dark.png">
 
 ## install
 
