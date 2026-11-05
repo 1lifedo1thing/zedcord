@@ -2456,6 +2456,21 @@ body {
 .searchResultsWrap_a98f3b {
     background-color: var(--zed-panel);
 }
+/* threads and forum posts open as a split pane. discord reserves its 8px resize handle as a gap between the panes
+   (the spacer is the pane's width plus the handle); give the gap back to the left pane and split them with a 1px
+   border, the handle straddling it like zed's */
+div:has(+ .chatLayerWrapper__01ae2.connectedRight__01ae2) {
+    margin-left: calc(var(--chat-resize-handle-width) * -1);
+}
+.chatLayerWrapper__01ae2.connectedRight__01ae2 {
+    > .container__01ae2:not(.chatTarget__01ae2) {
+        border-left: 1px solid var(--zed-border);
+        border-radius: 0;
+    }
+    > .resizeHandle__01ae2 {
+        left: -2px; /* mostly on the pane side, clear of the left pane's scrollbar */
+    }
+}
 /* midnight's hover border colour, used at rest too */
 .guilds__5e434,
 .guilds__5e434:hover {
@@ -3001,6 +3016,7 @@ body {
 /* pages without a chat (friends, message requests) draw the bottom border on the header */
 #app-mount .container__9293f:not(.title_f75fb0) {
     box-sizing: content-box;
+    width: calc(100% - 8px); /* discord's width: 100%, less the padding, which content-box adds on top */
     border-bottom: 1px solid var(--zed-border); /* midnight's #app-mount rule removes it */
 }
 .container__9293f .upperContainer__9293f {
@@ -3042,7 +3058,8 @@ body {
     padding: 0 14px 0 0;
     border-right: 1px solid var(--zed-border);
 }
-.children__9293f > .titleWrapper__9293f:first-child {
+.children__9293f > .titleWrapper__9293f:first-child,
+.children__9293f > .hiddenVisually_b18fe2:first-child + .titleWrapper__9293f {
     padding-left: 12px;
 }
 /* dms: the avatar opens the tab, like a channel's icon */
@@ -4163,10 +4180,11 @@ body {
 
 /* friends list = picker */
 
-/* virtualized at 61px rows and 50px titles. zoomed until a row is 40px like the dm list, contents zoomed back */
+/* virtualized at 61px rows and 50px titles. zoomed until a row is 48px, contents zoomed back: roomier than the dm
+   list's 40, since every row has two lines and a divider */
 body {
-    --zed-people-zoom: calc(40 / 61);
-    --zed-people-unzoom: calc(61 / 40);
+    --zed-people-zoom: calc(48 / 61);
+    --zed-people-unzoom: calc(61 / 48);
 }
 .peopleColumn__133bf .searchBar__5ec2f {
     margin-left: 8px;
@@ -4286,15 +4304,21 @@ body {
 
 /* friends page: active now = dock panel */
 
-/* flat sections split by borders, activity indented to the name like tree children */
-.scroller__7d20c {
-    padding: 0;
+/* inset rows like the friends list beside it: 8px from each edge (the scrollbar's gutter on the right only, not
+   discord's 8px padding plus a gutter on both sides), a rounded hover, and lines between them 8px further in that
+   hide next to the hovered row. activity is indented to the name like tree children */
+.container__7d20c .scroller__7d20c {
+    padding: 0 0 0 8px;
+    scrollbar-gutter: stable;
+}
+.content__7d20c {
+    --zed-active-now-line: linear-gradient(var(--zed-border-variant), var(--zed-border-variant)) bottom / calc(100% - 16px) 1px no-repeat;
 }
 .header__7d20c {
     margin: 0;
     padding: 6px 8px;
     line-height: 20px;
-    border-bottom: 1px solid var(--zed-border-variant);
+    background: var(--zed-active-now-line);
     font-size: var(--zed-ui-font-size);
     font-weight: 400;
     color: var(--zed-text-muted);
@@ -4302,19 +4326,25 @@ body {
 .content__7d20c {
     .itemCard__7e549 {
         margin: 0;
-        border-radius: 0;
+        border-radius: var(--zed-radius-sm);
         box-shadow: none;
     }
     .outer_bf1984 {
         border: none;
-        border-bottom: 1px solid var(--zed-border-variant);
-        border-radius: 0;
-        background-color: transparent;
+        background: var(--zed-active-now-line);
         box-shadow: none;
 
+        &:last-child,
+        &:hover,
+        &:has(+ .outer_bf1984:hover) {
+            background-image: none;
+        }
         &:hover {
             background-color: var(--zed-ghost-element-hover);
         }
+    }
+    .header__7d20c:has(+ .outer_bf1984:hover) {
+        background-image: none;
     }
     .header__00943 {
         padding: 8px;
