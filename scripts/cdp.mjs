@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Drives the running Vesktop window over CDP (Vesktop must be launched with --remote-debugging-port=9229).
 //
-//   node scripts/cdp.mjs apply [--flavor rose-pine]  build, write DEV_OUTPUT_PATH, inject (window.__themeDev helpers included)
+//   node scripts/cdp.mjs apply [--flavor rose-pine]  build, write DEV_OUTPUT_PATH, inject (window.__themeDev helpers included;
+//                                                    skipped when vesktop is unreachable)
 //   node scripts/cdp.mjs eval '<js expression>'      evaluate in Discord, awaits promises, prints JSON
 //   node scripts/cdp.mjs shot <out.png> [selector] [--width N] [--pad N] [--clip x,y,w,h] [--hover '<selector>']
 //                                                    screenshot whole window or one element's box, downscaled to N px wide (default 1400);
@@ -92,23 +93,27 @@ function opt(args, name, fallback) {
 }
 
 const [cmd, ...args] = process.argv.slice(2);
-const cdp = await connect();
+// apply still builds and installs when vesktop isn't running with the debug port; it just can't inject
+const cdp = await connect().catch((err) => {
+    if (cmd !== 'apply') throw err;
+    return null;
+});
 try {
     if (cmd === 'apply') {
         // build with midnight's build.js, then inject through midnight's loader (embedded mode, adds window.__themeDev)
         const require = createRequire(import.meta.url);
         const { buildCombinedTheme, config } = require('./build.js');
-        // --flavor <name> previews theme/flavors/zed-<name>.theme.css instead, in the installed copy too
+        // --flavor <name> previews theme/flavors/zedcord-<name>.theme.css instead, in the installed copy too
         // (a plain `apply` puts one dark back)
         const flavorsDir = path.join(root, 'theme', 'flavors');
         const flavor = opt(args, '--flavor', null);
-        const css = buildCombinedTheme(flavor ? path.join(flavorsDir, `zed-${flavor}.theme.css`) : undefined);
+        const css = buildCombinedTheme(flavor ? path.join(flavorsDir, `zedcord-${flavor}.theme.css`) : undefined);
         // also update the installed copy (DEV_OUTPUT_PATH in .env): vencord's theme loads after the injected
         // style and would win ties. temp file + rename so vencord's directory watcher hot-reloads it
         const env = fs.existsSync(path.join(root, '.env')) ? fs.readFileSync(path.join(root, '.env'), 'utf8') : '';
         const target = env.match(/^DEV_OUTPUT_PATH="?([^"\n]+)"?/m)?.[1];
         const install = (file, text) => {
-            const tmp = path.join(path.dirname(file), '.zed-dev.tmp');
+            const tmp = path.join(path.dirname(file), '.zedcord-dev.tmp');
             fs.writeFileSync(tmp, text);
             fs.renameSync(tmp, file);
         };
@@ -121,7 +126,8 @@ try {
         }
         const runtime = { base: null, displayName: config.displayName, version: Date.now(), css };
         const loader = fs.readFileSync(path.join(root, 'scripts', 'inject.js'), 'utf8').replace('__THEME_DEV_RUNTIME__', () => JSON.stringify(runtime));
-        console.log(JSON.stringify(await evaluate(cdp, `(async () => {\n${loader}\nreturn window.__themeDev.ready;\n})()`)));
+        if (!cdp) console.log(`installed${target ? '' : ' nothing (no DEV_OUTPUT_PATH)'}; vesktop isn't reachable over cdp, so nothing was injected`);
+        else console.log(JSON.stringify(await evaluate(cdp, `(async () => {\n${loader}\nreturn window.__themeDev.ready;\n})()`)));
     } else if (cmd === 'eval') {
         const out = await evaluate(cdp, args.join(' '));
         console.log(typeof out === 'string' ? out : JSON.stringify(out, null, 1));
@@ -199,5 +205,5 @@ try {
         process.exitCode = 1;
     }
 } finally {
-    cdp.close();
+    cdp?.close();
 }

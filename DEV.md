@@ -1,4 +1,4 @@
-# zed-discord dev loop
+# zedcord dev loop
 
 A Discord theme that makes the client look like the Zed editor (default "One Dark"). Built on top of
 midnight-discord, whose compiled build is copied in as the first source file (`src/midnight.css`, from
@@ -7,18 +7,18 @@ unchanged; only `scripts/theme.config.js` differs.
 
 ## Layout
 
-- `theme/zed.theme.css` — entry: header, font import, the build import (`@import url('https://refact0r.github.io/zed-discord/build/zed.css');`,
+- `theme/zedcord.theme.css` — entry: header, font import, the build import (`@import url('https://refact0r.github.io/zedcord/build/zedcord.css');`,
   served by GitHub Pages from `main`, and replaced with the compiled CSS by `scripts/build.js` for local dev), and One Dark's colours: `--zed-*` tokens on `:root`,
   each a key of Zed's theme schema (named in the comments), plus the accent scales (`--red-1`…`--purple-5`).
-- `theme/flavors/zed-<name>.theme.css` — other Zed themes (`rose-pine`): the same file with another theme's values,
+- `theme/flavors/zedcord-<name>.theme.css` — other Zed themes (`rose-pine`): the same file with another theme's values,
   copied from its JSON. They build like the base file and are written beside `DEV_OUTPUT_PATH` under their own
   names, so they show up in Vencord's theme list.
 - `src/variables.css` — what every flavor shares: Zed metrics, the midnight options the theme relies on, the forced
   density, and midnight's palette variables (`--bg-*`, `--text-*`, `--accent-*`…) mapped onto the `--zed-*` tokens.
 - `src/*.css` — the Zed layer, compiled in the order listed in `scripts/theme.config.js` (`sourceFiles`). Adding
   or removing a file means updating that list or the build fails.
-- `build/zed.css` — compiled `src/` (generated; don't hand-edit). `npm run dev` writes the fully inlined theme to
-  `DEV_OUTPUT_PATH` (Vesktop's `themes/zed.theme.css`).
+- `build/zedcord.css` — compiled `src/` (generated; don't hand-edit). `npm run dev` writes the fully inlined theme to
+  `DEV_OUTPUT_PATH` (Vesktop's `themes/zedcord.theme.css`).
 - `research/` — Zed reference: `zed-spec.md` (palette, metrics, fonts, icons from Zed's source),
   `one-dark.json`, `rose-pine.json` (the rose-pine-theme extension). Local only (gitignored): `zed-icons/` (SVGs
   copied from Zed's `assets/icons`) and `zed-onedark-full.png` (screenshot of real Zed in One Dark).

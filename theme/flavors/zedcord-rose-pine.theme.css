@@ -1,20 +1,24 @@
 /**
- * @name zed (rosé pine)
+ * @name zedcord (rosé pine)
  * @description discord, but it's zed (rosé pine). built on midnight-discord.
  * @author refact0r
  * @version 0.1.0
- * @website https://github.com/refact0r/zed-discord
- * @source https://github.com/refact0r/zed-discord/blob/main/theme/flavors/zed-rose-pine.theme.css
+ * @invite nz87hXyvcy
+ * @website https://github.com/refact0r/zedcord
+ * @source https://github.com/refact0r/zedcord/blob/main/theme/flavors/zedcord-rose-pine.theme.css
+ * @authorId 508863359777505290
+ * @authorLink https://www.refact0r.dev
+ * @donate https://ko-fi.com/refact0r
 */
 
 /* zed ships IBM Plex Sans (.ZedSans) and Lilex (.ZedMono), and only these weights */
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&family=Lilex:wght@400;700&display=swap');
 
 /* midnight base + zed layer (inlined by scripts/build.js) */
-@import url('https://refact0r.github.io/zed-discord/build/zed.css');
+@import url('https://refact0r.github.io/zedcord/build/zedcord.css');
 
 /* zed "Rosé Pine" (the rose-pine-theme extension, themes/rose-pine.json; copy in research/). token names and
-   their zed keys are listed in theme/zed.theme.css */
+   their zed keys are listed in theme/zedcord.theme.css */
 :root {
     /* surfaces: unlike one dark, the title bar, status bar and panels are the editor colour, and the tab bar is
        the lighter surface */

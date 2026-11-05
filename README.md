@@ -1,10 +1,11 @@
-# zed-discord
+# zedcord
 
 Discord, styled like the [Zed](https://zed.dev) editor in its default **One Dark** theme. It's a layer on top of
 [midnight-discord](https://github.com/refact0r/midnight-discord), the same way system24 is.
 
 - IBM Plex Sans UI with Lilex for code and timestamps (Zed's `.ZedSans` / `.ZedMono`)
 - flush panes split by 1px borders, no floating cards
+- Zed's logo as the home button, at the top of the server rail
 - channel list as Zed's project panel: square full-width rows, folder-style categories, indent guides,
   and a filled selection
 - chat header as Zed's tab bar, with the channel as the active tab and the topic beside it
@@ -18,15 +19,15 @@ Discord, styled like the [Zed](https://zed.dev) editor in its default **One Dark
   activity indented under its person like a tree row
 - Zed's elevated surfaces, small radii and flat ghost buttons for menus, popouts, modals and controls
 - flavors for other Zed themes, ported key for key from their theme JSON: **Rosé Pine**
-  (`theme/flavors/zed-rose-pine.theme.css`)
+  (`theme/flavors/zedcord-rose-pine.theme.css`)
 
 ## Install
 
-1. Download the theme file, [`zed.theme.css`](https://github.com/refact0r/zed-discord/blob/main/theme/zed.theme.css)
-   (or a flavor from [`theme/flavors/`](https://github.com/refact0r/zed-discord/tree/main/theme/flavors)).
+1. Download the theme file, [`zedcord.theme.css`](https://github.com/refact0r/zedcord/blob/main/theme/zedcord.theme.css)
+   (or a flavor from [`theme/flavors/`](https://github.com/refact0r/zedcord/tree/main/theme/flavors)).
 2. Drop it into your client's themes folder (Vencord → Themes → Open Themes Folder) and enable it.
 
-The theme file imports the compiled CSS from `https://refact0r.github.io/zed-discord/build/zed.css`, so it stays
+The theme file imports the compiled CSS from `https://refact0r.github.io/zedcord/build/zedcord.css`, so it stays
 up to date with `main`.
 
 ## Install (local)
@@ -36,6 +37,6 @@ npm install
 npm run dev   # writes the inlined theme to DEV_OUTPUT_PATH (see .env) and rebuilds on change
 ```
 
-Then enable `zed.theme.css` (or a flavor, e.g. `zed-rose-pine.theme.css`) in Vencord → Themes.
+Then enable `zedcord.theme.css` (or a flavor, e.g. `zedcord-rose-pine.theme.css`) in Vencord → Themes.
 
 See [DEV.md](DEV.md) for the agent/CDP dev loop.

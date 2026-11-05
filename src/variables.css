@@ -1,6 +1,6 @@
 /* shared variables: zed's metrics, the midnight options this theme relies on, the forced density, and midnight's
    palette mapped onto the zed colour tokens. the colours themselves (--zed-* tokens, accent scales) live in the
-   theme files: theme/zed.theme.css (one dark) and theme/flavors/*.theme.css */
+   theme files: theme/zedcord.theme.css (one dark) and theme/flavors/*.theme.css */
 
 body {
     --font: 'IBM Plex Sans';
@@ -11,7 +11,9 @@ body {
     --zed-ui-font-size: 14px; /* LabelSize::Default at ui_font_size 16 */
     --zed-ui-font-size-sm: 12px; /* LabelSize::Small */
     --zed-ui-font-size-xs: 10px; /* LabelSize::XSmall: people rows' second line */
-    --zed-title-bar-height: 36px; /* zed's is 34; 36 centres the native macOS traffic lights */
+    /* the tab bar's 32px, with the line under it (main.css). vesktop puts the macOS traffic lights 10pt down, so
+       they're centred at 100% zoom, and on macOS the bar never renders shorter than that */
+    --zed-title-bar-height: var(--zed-tab-bar-height);
     --zed-tab-bar-height: 32px;
     --zed-indent: 20px;
     --zed-radius-sm: 4px;
@@ -32,7 +34,9 @@ body {
     --top-bar-button-position: off;
     --top-bar-title-position: left;
     --custom-window-controls: off;
-    --custom-dms-icon: off;
+    --custom-dms-icon: custom; /* zed's logo (assets/images/zed_logo.svg) as the home button; sized in main.css */
+    --dms-icon-svg-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Cpath fill-rule='evenodd' d='M9 6C7.34315 6 6 7.34315 6 9V75H0V9C0 4.02944 4.02944 0 9 0H89.3787C93.3878 0 95.3955 4.84715 92.5607 7.68198L43.0551 57.1875H57V51H63V58.6875C63 61.1728 60.9853 63.1875 58.5 63.1875H37.0551L26.7426 73.5H73.5V36H79.5V73.5C79.5 76.8137 76.8137 79.5 73.5 79.5H20.7426L10.2426 90H87C88.6569 90 90 88.6569 90 87V21H96V87C96 91.9706 91.9706 96 87 96H6.62132C2.61224 96 0.604504 91.1529 3.43934 88.318L52.7574 39H39V45H33V37.5C33 35.0147 35.0147 33 37.5 33H58.7574L69.2574 22.5H22.5V60H16.5V22.5C16.5 19.1863 19.1863 16.5 22.5 16.5H75.2574L85.7574 6H9Z'/%3E%3C/svg%3E");
+    --dms-icon-svg-size: 100%;
     --chatbar-height: 40px; /* lines the composer up with the user panel (status bar) */
     --bg-floating: var(--zed-elevated-surface);
 }

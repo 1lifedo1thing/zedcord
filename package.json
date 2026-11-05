@@ -1,5 +1,5 @@
 {
-	"name": "zed-discord",
+	"name": "zedcord",
 	"version": "0.1.0",
 	"scripts": {
 		"build": "node scripts/build.js",
