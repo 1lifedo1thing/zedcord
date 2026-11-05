@@ -23,6 +23,9 @@ unchanged; only `scripts/theme.config.js` differs.
   `one-dark.json`, `ayu.json` and `gruvbox.json` (Zed 1.27.0's built-in families), `rose-pine.json` and `catppuccin.json`
   (its mauve-accent file), from the extensions of those names. Local only (gitignored): `zed-icons/` (SVGs
   copied from Zed's `assets/icons`) and `zed-onedark-full.png` (screenshot of real Zed in One Dark).
+- `assets/flavors/` — README images: `<name>.png` (window screenshots, 3248x2122) and `thumbs/<name>.jpg`, the
+  previews in the README's flavor table, at half size (`sips -s format jpeg -s formatOptions 85 --resampleWidth 1624
+  <name>.png --out thumbs/<name>.jpg`). A new flavor gets both and a cell in that table.
 
 ## Colour tokens
 
