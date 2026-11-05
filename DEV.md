@@ -10,7 +10,7 @@ unchanged; only `scripts/theme.config.js` differs.
 - `theme/zedcord.theme.css` — entry: header, font import, the build import (`@import url('https://refact0r.github.io/zedcord/build/zedcord.css');`,
   served by GitHub Pages from `main`, and replaced with the compiled CSS by `scripts/build.js` for local dev), and One Dark's colours: `--zed-*` tokens on `:root`,
   each a key of Zed's theme schema (named in the comments), plus the accent scales (`--red-1`…`--purple-5`).
-- `theme/flavors/zedcord-<name>.theme.css` — other Zed themes (`rose-pine`, `ayu-dark`, `gruvbox-dark`): the same file
+- `theme/flavors/zedcord-<name>.theme.css` — other Zed themes (`rose-pine`, `ayu-dark`, `gruvbox-dark`, `catppuccin-mocha`, `tokyo-night`): the same file
   with another theme's values, generated from its JSON. They build like the base file and are written beside `DEV_OUTPUT_PATH` under their own
   names, so they show up in Vencord's theme list.
 - `src/variables.css` — what every flavor shares: Zed metrics, the midnight options the theme relies on, the forced
@@ -20,8 +20,8 @@ unchanged; only `scripts/theme.config.js` differs.
 - `build/zedcord.css` — compiled `src/` (generated; don't hand-edit). `npm run dev` writes the fully inlined theme to
   `DEV_OUTPUT_PATH` (Vesktop's `themes/zedcord.theme.css`).
 - `research/` — Zed reference: `zed-spec.md` (palette, metrics, fonts, icons from Zed's source),
-  `one-dark.json`, `ayu.json` and `gruvbox.json` (Zed 1.27.0's built-in families), `rose-pine.json` (the
-  rose-pine-theme extension). Local only (gitignored): `zed-icons/` (SVGs
+  `one-dark.json`, `ayu.json` and `gruvbox.json` (Zed 1.27.0's built-in families), `rose-pine.json`, `catppuccin.json`
+  (its mauve-accent file) and `tokyo-night.json` (from the extensions of those names). Local only (gitignored): `zed-icons/` (SVGs
   copied from Zed's `assets/icons`) and `zed-onedark-full.png` (screenshot of real Zed in One Dark).
 
 ## Colour tokens
@@ -56,11 +56,13 @@ lighter surface, its `border.variant` is brighter than `border`, and its subtle 
 2. `node scripts/zed-flavor.mjs research/<file>.json "<Theme Name>"` prints the flavor's `:root` block: every token
    from its Zed key, the accent scales, and `CHECK` lines for what needs a decision. Paste it into
    `theme/flavors/zedcord-<name>.theme.css` under a copy of the Rosé Pine file's header and imports. The script
-   reproduces the Rosé Pine, Ayu Dark and Gruvbox Dark flavors exactly (rerun it and diff the declarations after
+   reproduces every flavor's declarations exactly apart from the CHECKs they settled (rerun it and diff after
    changing it); One Dark predates it and stays hand-tuned (see below).
 3. Decisions the script can't make:
-   - `--zed-guild-icon`: `background` when it differs from the panels; Rosé Pine's `background` is the panel
-     colour, so it takes the resting button fill (`ghost_element.background`).
+   - `--zed-guild-icon`: `background`, else the resting button fill, if it is at least 0.03 OKLCH lightness off
+     the panels (One Dark's tiles are 0.05 above). Rosé Pine's `background` is the panel colour, so it takes
+     `ghost_element.background`; Tokyo Night's background and button fill are both 0.02 off, so it takes
+     `element.active` (#202330).
    - unset keys: Zed falls back to `crates/theme/src/default_colors.rs`; a syntax key the theme leaves out draws
      in `editor.foreground` (Rosé Pine has no `selector`, so CSS class selectors are plain text).
    - accents: shade 2 is `error` (red), `success` (green), `text.accent` (blue), `warning` (yellow) and a purple;
@@ -75,15 +77,21 @@ lighter surface, its `border.variant` is brighter than `border`, and its subtle 
 4. Look at real Zed in the theme before trusting the port; values that look equal in the JSON can sit on
    different surfaces. Zed's built-in themes come from one template: if grouping the surface, border and element
    keys by equal value gives One Dark's groups (as Ayu and Gruvbox do), they lay out like One Dark, which is already
-   matched to real Zed, and the JSON is enough. Extension themes (Rosé Pine) need the look. Zed is the user's editor: ask first, and put their theme back afterwards. Set `theme.dark`
-   in `~/.config/zed/settings.json` (Zed reloads it live), find a window with `swift scripts/winid.swift zed`,
-   capture it with `screencapture -x -o -l <id> out.png`, crop with `scripts/crop.swift`, and sample with
+   matched to real Zed, and the JSON is enough. Extension themes (Rosé Pine, Catppuccin, Tokyo Night) each lay out
+   differently and need the look. Zed is the user's editor: ask first (installing a theme for you to port counts),
+   back up its settings, and put their theme back afterwards. Set `theme.dark` in `~/.config/zed/settings.json` (Zed reloads it live), find a window with `swift scripts/winid.swift zed`,
+   capture it with `screencapture -x -o -T 2 -l <id> out.png` (`-T 2` waits for the reload), crop with `scripts/crop.swift`, and sample with
    `scripts/px.swift`. Captures are colour-managed, so samples read brighter than the JSON (Rosé Pine's #191724
    samples as #211f2f, #1f1d2e as #29283b): compare samples with each other, not with the JSON.
 5. Things that differed for Rosé Pine and are kept as Zed draws them: the subtle-button fill is nearly invisible
    on the tab bar (#21202e on #1f1d2e); `element.hover` equals `element.active` (no press feedback on filled
    elements); `ghost_element.active` is very bright (#908caa), so pressed buttons flash; `border.focused` is
-   close to the surfaces, so keyboard focus rings barely show.
+   close to the surfaces, so keyboard focus rings barely show. Catppuccin Mocha: the chrome (title bar, status
+   bar, tab bar) is the darkest colour and the editor the lightest; selected rows are a faint translucent fill
+   (#3132444d) and hovered ones solid #313244, so hover is brighter than selection; `text.muted` (#bac2de) is close
+   to `text`, so read and unread channels differ little; its accent is mauve, so the blue scale is mauve. Tokyo
+   Night: all chrome is one colour with a lighter editor; borders are near-black; hover and selected are the same
+   bright slate (#565f89).
 6. Previewing: `node scripts/cdp.mjs apply --flavor <name>` builds the flavor into the live installed copy, so it
    changes what the user sees: ask before running it, or have them enable `zedcord-<name>.theme.css` in Vencord
    themselves. A plain `apply` (also from another session) puts One Dark back. To install a new flavor without

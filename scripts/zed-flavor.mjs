@@ -93,14 +93,6 @@ for (const [token, k] of [
     ['emphasis-strong', 'emphasis.strong'],
 ]) syn(`syntax-${token}`, k);
 
-// server tiles: `background` when it stands out from the panels, else the resting button fill
-lines.push('');
-const bg = hex(style.background);
-const ghost = hex(style['ghost_element.background']);
-if (bg && bg !== hex(style['panel.background'])) out('guild-icon', bg, 'background');
-else if (ghost && !ghost.endsWith('00')) out('guild-icon', ghost, 'CHECK: background is the panel colour; ghost_element.background');
-else out('guild-icon', null, 'CHECK: background is the panel colour and buttons have no resting fill; pick one');
-
 // accent scales from the status colours. purple has no status key: terminal magenta, refined below (one dark's own
 // is its keyword)
 const oneDark = {
@@ -151,6 +143,17 @@ function toHex([L, C, H]) {
     else lo = C;
     return '#' + linearRgb([L, lo, H]).map((c) => fromLinear(c).toString(16).padStart(2, '0')).join('');
 }
+
+// server tiles: `background`, else the resting button fill, if it stands out from the panels by 0.03 OKLCH
+// lightness (one dark's tiles are 0.05 above; rosé pine's background is the panel colour, tokyo night's only 0.02 off)
+lines.push('');
+const panel = hex(style['panel.background']);
+const visible = (h) => h && panel && !h.slice(7) && Math.abs(oklch(h)[0] - oklch(panel)[0]) >= 0.03;
+const bg = hex(style.background);
+const ghost = hex(style['ghost_element.background']);
+if (visible(bg)) out('guild-icon', bg, 'background');
+else if (visible(ghost)) out('guild-icon', ghost, 'CHECK: background is too close to the panels; ghost_element.background');
+else out('guild-icon', null, 'CHECK: background and the resting button fill are too close to the panels; pick one');
 
 // purple: terminal magenta, or its bright variant when that's the tier the other accents are in (gruvbox's
 // error, success and warning are its bright colours). some themes' "magenta" isn't purple at all (ayu's is cyan):
