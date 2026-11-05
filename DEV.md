@@ -33,14 +33,51 @@ lighter surface, its `border.variant` is brighter than `border`, and its subtle 
   member lists), `--zed-tab-bar` / `--zed-tab-active` (page headers), `--zed-editor` (chat), `--zed-surface`
   (embeds, code blocks), `--zed-elevated-surface` (menus, popouts, modals).
 - rows: project-panel rows (channel list, dm list, settings nav) use `--zed-element-hover` / `-selected`, as Zed's
-  project panel does; `ListItem` rows (member list, friends list, menus) use `--zed-ghost-element-hover` /
-  `-selected`.
+  project panel does (`crates/project_panel/src/project_panel.rs`, `get_item_color`); `ListItem` rows (member
+  list, friends list, menus) use `--zed-ghost-element-hover` / `-selected` (`crates/ui/src/components/list/list_item.rs`).
 - buttons: subtle icon buttons (`ButtonStyle::Subtle`: header, composer, status bar, hover toolbar) rest on
-  `--zed-ghost-element` and use `--zed-ghost-element-hover` / `-active`; filled ones (inputs, reactions) use
-  `--zed-element*`.
+  `--zed-ghost-element` and use `--zed-ghost-element-hover` / `-active`; outlined ones rest on the ghost fill and
+  hover with ghost hover; filled ones (inputs, reactions) use `--zed-element*`
+  (`crates/ui/src/components/button/button_like.rs`).
 - `--zed-guild-icon` is the one token with no Zed key (server tiles without an image); each theme file picks it.
-- Check a flavor with `node scripts/cdp.mjs apply --flavor rose-pine` (the live copy too); a plain `apply` puts
-  One Dark back.
+- New tokens must keep One Dark identical: give them One Dark's current value, and prove it with a before/after
+  `scripts/colour-snapshot.js` + `scripts/colour-diff.mjs` (read-only; usage in the file). Snapshots of different
+  pages also differ in content (usernames, embeds); only shared chrome counts.
+
+## Porting a Zed theme (flavors)
+
+1. Get the theme's JSON: built-in themes are in Zed's repo under `assets/themes/<name>/<name>.json`; extension
+   themes are installed at `~/Library/Application Support/Zed/extensions/installed/<extension>/themes/*.json`
+   (one family file can hold several, e.g. rose-pine-theme ships Rosé Pine, Moon and Dawn). Copy it into
+   `research/`.
+2. `node scripts/zed-flavor.mjs research/<file>.json "<Theme Name>"` prints the flavor's `:root` block: every token
+   from its Zed key, the accent scales, and `CHECK` lines for what needs a decision. Paste it into
+   `theme/flavors/zedcord-<name>.theme.css` under a copy of the Rosé Pine file's header and imports. The script
+   reproduces the Rosé Pine flavor exactly; One Dark predates it and stays hand-tuned (see below).
+3. Decisions the script can't make:
+   - `--zed-guild-icon`: `background` when it differs from the panels; Rosé Pine's `background` is the panel
+     colour, so it takes the resting button fill (`ghost_element.background`).
+   - unset keys: Zed falls back to `crates/theme/src/default_colors.rs`; a syntax key the theme leaves out draws
+     in `editor.foreground` (Rosé Pine has no `selector`, so CSS class selectors are plain text).
+   - accents: shade 2 is `error` (red), `success` (green), `text.accent` (blue), `warning` (yellow) and
+     `terminal.ansi.magenta` (purple); shades 1 and 3-5 keep One Dark's OKLCH lightness and chroma steps at the
+     base hue. Rosé Pine's success is pine (#31748f), so its online dots and green buttons are dark teal.
+   - One Dark's deliberate deviations: `ignored` is #6b717d, not #878a98 (too close to muted for muted channels),
+     its purple is its keyword colour, and its hand-picked shades drift in hue slightly.
+4. Look at real Zed in the theme before trusting the port; values that look equal in the JSON can sit on
+   different surfaces. Zed is the user's editor: ask first, and put their theme back afterwards. Set `theme.dark`
+   in `~/.config/zed/settings.json` (Zed reloads it live), find a window with `swift scripts/winid.swift zed`,
+   capture it with `screencapture -x -o -l <id> out.png`, crop with `scripts/crop.swift`, and sample with
+   `scripts/px.swift`. Captures are colour-managed, so samples read brighter than the JSON (Rosé Pine's #191724
+   samples as #211f2f, #1f1d2e as #29283b): compare samples with each other, not with the JSON.
+5. Things that differed for Rosé Pine and are kept as Zed draws them: the subtle-button fill is nearly invisible
+   on the tab bar (#21202e on #1f1d2e); `element.hover` equals `element.active` (no press feedback on filled
+   elements); `ghost_element.active` is very bright (#908caa), so pressed buttons flash; `border.focused` is
+   close to the surfaces, so keyboard focus rings barely show.
+6. Previewing: `node scripts/cdp.mjs apply --flavor <name>` builds the flavor into the live installed copy, so it
+   changes what the user sees: ask before running it, or have them enable `zedcord-<name>.theme.css` in Vencord
+   themselves. A plain `apply` (also from another session) puts One Dark back. Light themes (e.g. Rosé Pine Dawn)
+   are untested: `--text-0`, the text on coloured elements, is the editor colour, which assumes a dark theme.
 
 ## Live loop (Vesktop over CDP)
 
