@@ -1,42 +1,29 @@
+<img src="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/preview.png">
+
 # zedcord
 
-Discord, styled like the [Zed](https://zed.dev) editor in its default **One Dark** theme. It's a layer on top of
-[midnight-discord](https://github.com/refact0r/midnight-discord), the same way system24 is.
+discord, but it's [zed](https://zed.dev). built on [midnight](https://github.com/refact0r/midnight-discord).
 
-- IBM Plex Sans UI with Lilex for code and timestamps (Zed's `.ZedSans` / `.ZedMono`)
-- flush panes split by 1px borders, no floating cards
-- Zed's logo as the home button, at the top of the server rail
-- channel list as Zed's project panel: square full-width rows, folder-style categories, indent guides,
-  and a filled selection
-- chat header as Zed's tab bar, with the channel as the active tab and the topic beside it
-- chat as the editor surface: active-line hover, gutter-coloured mono timestamps, the theme's syntax highlighting
-- user panel and composer sharing one status-bar line along the bottom, with Vencord's Spotify controls as a
-  compact two-row panel section above it
-- denser than stock discord, whatever the accessibility settings say: discord's compact spacing scale, 15px chat
-  (zed's buffer size) with 32px avatars and tighter groups, a 32px server rail, 40px member / dm / friend rows
-  with 24px avatars, and 16px icons in 24px buttons across the header, composer, hover toolbar and status bar
-- friends page as a Zed picker (search over inset rows), with Active Now as a dock panel of flat sections, each
-  activity indented under its person like a tree row
-- Zed's elevated surfaces, small radii and flat ghost buttons for menus, popouts, modals and controls
-- flavors for other Zed themes, ported key for key from their theme JSON: **Rosé Pine**
-  (`theme/flavors/zedcord-rose-pine.theme.css`)
+pictured: zedcord next to zed, both in rosé pine. the default theme file uses zed's default, one dark.
 
-## Install
+## install
 
-1. Download the theme file, [`zedcord.theme.css`](https://github.com/refact0r/zedcord/blob/main/theme/zedcord.theme.css)
-   (or a flavor from [`theme/flavors/`](https://github.com/refact0r/zedcord/tree/main/theme/flavors)).
-2. Drop it into your client's themes folder (Vencord → Themes → Open Themes Folder) and enable it.
+### vencord/betterdiscord (or any client that supports theme files)
 
-The theme file imports the compiled CSS from `https://refact0r.github.io/zedcord/build/zedcord.css`, so it stays
-up to date with `main`.
+1. download the theme file, [`zedcord.theme.css`](https://github.com/refact0r/zedcord/blob/main/theme/zedcord.theme.css). (there should be a download button at the top right of the page) for rosé pine, use [`zedcord-rose-pine.theme.css`](https://github.com/refact0r/zedcord/blob/main/theme/flavors/zedcord-rose-pine.theme.css) instead.
+2. drag `zedcord.theme.css` into your theme folder. (there should be a button to open the theme folder in theme settings)
+3. (optional) customize the theme by opening `zedcord.theme.css` and editing the CSS variables within.
 
-## Install (local)
+### install through link
 
-```bash
-npm install
-npm run dev   # writes the inlined theme to DEV_OUTPUT_PATH (see .env) and rebuilds on change
-```
+add `https://refact0r.github.io/zedcord/build/zedcord.css` to your theme import links. the colors live in the theme file, so you will need to copy its variables to your quickcss as well.
 
-Then enable `zedcord.theme.css` (or a flavor, e.g. `zedcord-rose-pine.theme.css`) in Vencord → Themes.
+## discord server
 
-See [DEV.md](DEV.md) for the agent/CDP dev loop.
+need help? want to give feedback? want to be notified about upcoming changes? join <https://discord.gg/nz87hXyvcy>
+
+## credits
+
+[zed](https://zed.dev) for the design, along with its one dark theme and [rosé pine](https://github.com/rose-pine/zed) for the colors.
+
+[midnight](https://github.com/refact0r/midnight-discord) for the core styles.
