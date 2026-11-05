@@ -20,6 +20,15 @@ Discord, styled like the [Zed](https://zed.dev) editor in its default **One Dark
 - flavors for other Zed themes, ported key for key from their theme JSON: **Rosé Pine**
   (`theme/flavors/zed-rose-pine.theme.css`)
 
+## Install
+
+1. Download the theme file, [`zed.theme.css`](https://github.com/refact0r/zed-discord/blob/main/theme/zed.theme.css)
+   (or a flavor from [`theme/flavors/`](https://github.com/refact0r/zed-discord/tree/main/theme/flavors)).
+2. Drop it into your client's themes folder (Vencord → Themes → Open Themes Folder) and enable it.
+
+The theme file imports the compiled CSS from `https://refact0r.github.io/zed-discord/build/zed.css`, so it stays
+up to date with `main`.
+
 ## Install (local)
 
 ```bash

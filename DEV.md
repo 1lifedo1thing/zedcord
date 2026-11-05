@@ -7,8 +7,8 @@ unchanged; only `scripts/theme.config.js` differs.
 
 ## Layout
 
-- `theme/zed.theme.css` — entry: header, font import, the build import placeholder (`@import url('../build/zed.css');`,
-  replaced with the compiled CSS by `scripts/build.js`), and One Dark's colours: `--zed-*` tokens on `:root`,
+- `theme/zed.theme.css` — entry: header, font import, the build import (`@import url('https://refact0r.github.io/zed-discord/build/zed.css');`,
+  served by GitHub Pages from `main`, and replaced with the compiled CSS by `scripts/build.js` for local dev), and One Dark's colours: `--zed-*` tokens on `:root`,
   each a key of Zed's theme schema (named in the comments), plus the accent scales (`--red-1`…`--purple-5`).
 - `theme/flavors/zed-<name>.theme.css` — other Zed themes (`rose-pine`): the same file with another theme's values,
   copied from its JSON. They build like the base file and are written beside `DEV_OUTPUT_PATH` under their own
