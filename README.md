@@ -26,24 +26,29 @@ to use a flavor, follow the install instructions above but download the flavor t
 
 <table>
     <tr>
-        <td width="50%">
+        <td width="33%">
+            <a href="https://github.com/refact0r/zedcord/blob/main/theme/zedcord.theme.css"><b>one dark</b></a> (default)<br>
+            <a href="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/one-dark.png"><img src="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/thumbs/one-dark.jpg"></a>
+        </td>
+        <td width="33%">
             <a href="https://github.com/refact0r/zedcord/blob/main/theme/flavors/zedcord-rose-pine.theme.css"><b>rosé pine</b></a><br>
             <a href="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/rose-pine.png"><img src="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/thumbs/rose-pine.jpg"></a>
         </td>
-        <td width="50%">
+        <td width="33%">
             <a href="https://github.com/refact0r/zedcord/blob/main/theme/flavors/zedcord-catppuccin-mocha.theme.css"><b>catppuccin mocha</b></a><br>
             <a href="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/catppuccin-mocha.png"><img src="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/thumbs/catppuccin-mocha.jpg"></a>
         </td>
     </tr>
     <tr>
-        <td width="50%">
+        <td width="33%">
             <a href="https://github.com/refact0r/zedcord/blob/main/theme/flavors/zedcord-ayu-dark.theme.css"><b>ayu dark</b></a><br>
             <a href="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/ayu-dark.png"><img src="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/thumbs/ayu-dark.jpg"></a>
         </td>
-        <td width="50%">
+        <td width="33%">
             <a href="https://github.com/refact0r/zedcord/blob/main/theme/flavors/zedcord-gruvbox-dark.theme.css"><b>gruvbox dark</b></a><br>
             <a href="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/gruvbox-dark.png"><img src="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/flavors/thumbs/gruvbox-dark.jpg"></a>
         </td>
+        <td width="33%"></td>
     </tr>
 </table>
 
