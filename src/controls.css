@@ -1,0 +1,545 @@
+/* buttons, inputs, switches, checkboxes, tab-like toggles — zed controls (metrics: research/zed-spec.md §3.1, §3.4) */
+
+/* ---------- tokens: discord's control variables -> zed's button styles ---------- */
+
+/* same scope as midnight's mapping, so these win by source order */
+body,
+.theme-dark:not(.custom-user-profile-theme),
+.theme-light:not(.custom-user-profile-theme) {
+    /* status tints (status.*.background is the colour at 10%) */
+    --ctl-accent-bg: color-mix(in srgb, var(--zed-text-accent) 10%, transparent);
+    --ctl-accent-bg-hover: color-mix(in srgb, var(--zed-text-accent) 15%, transparent);
+    --ctl-accent-bg-active: color-mix(in srgb, var(--zed-text-accent) 20%, transparent);
+    --ctl-error-bg: color-mix(in srgb, var(--red-2) 10%, transparent);
+    --ctl-error-bg-hover: color-mix(in srgb, var(--red-2) 15%, transparent);
+    --ctl-error-bg-active: color-mix(in srgb, var(--red-2) 20%, transparent);
+    --ctl-success-bg: color-mix(in srgb, var(--green-2) 10%, transparent);
+    --ctl-success-bg-hover: color-mix(in srgb, var(--green-2) 15%, transparent);
+    --ctl-success-bg-active: color-mix(in srgb, var(--green-2) 20%, transparent);
+
+    /* primary = ButtonStyle::Tinted(Accent): 10% accent fill, no visible border */
+    --control-primary-background-default: var(--ctl-accent-bg);
+    --control-primary-background-hover: var(--ctl-accent-bg-hover);
+    --control-primary-background-active: var(--ctl-accent-bg-active);
+    --control-primary-border-default: transparent;
+    --control-primary-border-hover: transparent;
+    --control-primary-border-active: transparent;
+    --control-primary-text-default: var(--zed-text);
+    --control-primary-text-hover: var(--zed-text);
+    --control-primary-text-active: var(--zed-text);
+    --control-primary-icon-default: var(--zed-text-accent);
+    --control-primary-icon-hover: var(--zed-text-accent);
+    --control-primary-icon-active: var(--zed-text-accent);
+
+    /* secondary = ButtonStyle::Outlined */
+    --control-secondary-background-default: var(--zed-element);
+    --control-secondary-background-hover: var(--zed-element-hover);
+    --control-secondary-background-active: var(--zed-element-active);
+    --control-secondary-border-default: var(--zed-border-variant);
+    --control-secondary-border-hover: var(--zed-border);
+    --control-secondary-border-active: var(--zed-border-variant);
+    --control-secondary-text-default: var(--zed-text);
+    --control-secondary-text-hover: var(--zed-text);
+    --control-secondary-text-active: var(--zed-text);
+    --control-secondary-icon-default: var(--zed-text-muted);
+    --control-secondary-icon-hover: var(--zed-text);
+    --control-secondary-icon-active: var(--zed-text);
+    --button-outline-primary-text: var(--zed-text);
+    --button-outline-brand-background-hover: var(--zed-element-hover);
+    --button-outline-brand-border-active: var(--zed-border-variant);
+
+    /* critical = ButtonStyle::Tinted(Error); the outlined variant keeps red text */
+    --control-critical-primary-background-default: var(--ctl-error-bg);
+    --control-critical-primary-background-hover: var(--ctl-error-bg-hover);
+    --control-critical-primary-background-active: var(--ctl-error-bg-active);
+    --control-critical-primary-border-default: transparent;
+    --control-critical-primary-border-hover: transparent;
+    --control-critical-primary-border-active: transparent;
+    --control-critical-primary-text-default: var(--red-2);
+    --control-critical-primary-text-hover: var(--red-1);
+    --control-critical-primary-text-active: var(--red-1);
+    --control-critical-primary-icon-default: var(--red-2);
+    --control-critical-primary-icon-hover: var(--red-1);
+    --control-critical-primary-icon-active: var(--red-1);
+    --control-critical-secondary-background-default: var(--zed-element);
+    --control-critical-secondary-background-hover: var(--ctl-error-bg);
+    --control-critical-secondary-background-active: var(--ctl-error-bg-hover);
+    --control-critical-secondary-border-default: var(--zed-border-variant);
+    --control-critical-secondary-border-hover: var(--zed-border);
+    --control-critical-secondary-border-active: var(--zed-border-variant);
+    --control-critical-secondary-text-default: var(--red-2);
+    --control-critical-secondary-text-hover: var(--red-1);
+    --control-critical-secondary-text-active: var(--red-1);
+    --control-critical-secondary-icon-default: var(--red-2);
+    --control-critical-secondary-icon-hover: var(--red-1);
+    --control-critical-secondary-icon-active: var(--red-1);
+
+    /* join voice / connected = ButtonStyle::Tinted(Success) */
+    --control-connect-background-default: var(--ctl-success-bg);
+    --control-connect-background-hover: var(--ctl-success-bg-hover);
+    --control-connect-background-active: var(--ctl-success-bg-active);
+    --control-connect-border-default: transparent;
+    --control-connect-border-hover: transparent;
+    --control-connect-border-active: transparent;
+    --control-connect-text-default: var(--green-2);
+    --control-connect-text-hover: var(--green-1);
+    --control-connect-text-active: var(--green-1);
+    --control-connect-icon-default: var(--green-2);
+    --control-connect-icon-hover: var(--green-1);
+    --control-connect-icon-active: var(--green-1);
+    --control-connected-background-default: var(--ctl-success-bg);
+    --control-connected-background-hover: var(--ctl-success-bg-hover);
+    --control-connected-background-active: var(--ctl-success-bg-active);
+    --control-connected-border-default: transparent;
+    --control-connected-border-hover: transparent;
+    --control-connected-border-active: transparent;
+
+    /* expressive (nitro upsell) = Tinted(Accent) without the glow */
+    --control-expressive-background-default: var(--ctl-accent-bg);
+    --control-expressive-background-hover: var(--ctl-accent-bg-hover);
+    --control-expressive-background-active: var(--ctl-accent-bg-active);
+    --control-expressive-text-default: var(--zed-text);
+    --control-expressive-text-hover: var(--zed-text);
+    --control-expressive-text-active: var(--zed-text);
+    --control-expressive-icon-default: var(--zed-text-accent);
+    --control-expressive-icon-hover: var(--zed-text-accent);
+    --control-expressive-icon-active: var(--zed-text-accent);
+
+    /* icon-only = ButtonStyle::Subtle (ghost) */
+    --control-icon-only-background-default: var(--zed-ghost-element);
+    --control-icon-only-background-hover: var(--zed-ghost-element-hover);
+    --control-icon-only-background-active: var(--zed-ghost-element-active);
+    --control-icon-only-border-hover: transparent;
+    --control-icon-only-border-active: transparent;
+    --control-icon-only-icon-default: var(--zed-text-muted);
+    --control-icon-only-icon-hover: var(--zed-text);
+    --control-icon-only-icon-active: var(--zed-text);
+
+    /* overlay buttons sit on banners/images: keep them opaque, outlined */
+    --control-overlay-primary-background-default: var(--zed-element-active);
+    --control-overlay-primary-background-hover: color-mix(in srgb, var(--zed-element-active), var(--zed-text) 8%);
+    --control-overlay-primary-background-active: color-mix(in srgb, var(--zed-element-active), var(--zed-text) 14%);
+    --control-overlay-primary-border-default: var(--zed-border);
+    --control-overlay-primary-border-hover: var(--zed-border);
+    --control-overlay-primary-border-active: var(--zed-border);
+    --control-overlay-primary-text-default: var(--zed-text);
+    --control-overlay-primary-text-hover: var(--zed-text);
+    --control-overlay-primary-text-active: var(--zed-text);
+    --control-overlay-primary-icon-default: var(--zed-text);
+    --control-overlay-primary-icon-hover: var(--zed-text);
+    --control-overlay-primary-icon-active: var(--zed-text);
+
+    /* text inputs = zed's search input: no fill, 1px border, focused border */
+    --input-background-default: transparent;
+    --input-border-default: var(--zed-border);
+    --input-border-hover: var(--zed-border);
+    --input-border-active: var(--zed-border-focused);
+    --input-text-default: var(--zed-text);
+    --input-placeholder-text-default: var(--zed-text-placeholder);
+    --input-background-error-default: transparent;
+    --input-border-error-default: var(--red-2);
+
+    /* checkbox (zed's Checkbox: hairline box, accent check, no fill) */
+    --checkbox-background-default: transparent;
+    --checkbox-background-hover: transparent;
+    --checkbox-background-active: var(--zed-element-active);
+    --checkbox-background-selected-default: transparent;
+    --checkbox-background-selected-hover: transparent;
+    --checkbox-border-default: var(--zed-border);
+    --checkbox-border-hover: color-mix(in srgb, var(--zed-border) 70%, transparent);
+    --checkbox-border-active: var(--zed-border);
+    --checkbox-border-selected-default: var(--zed-border);
+    --checkbox-border-selected-hover: color-mix(in srgb, var(--zed-border) 70%, transparent);
+    --checkbox-icon-active: var(--zed-text-accent);
+
+    /* radio: same language as the checkbox, round */
+    --radio-background-default: transparent;
+    --radio-background-hover: transparent;
+    --radio-background-active: var(--zed-element-active);
+    --radio-background-selected-default: transparent;
+    --radio-background-selected-hover: transparent;
+    --radio-border-default: var(--zed-border);
+    --radio-border-hover: color-mix(in srgb, var(--zed-border) 70%, transparent);
+    --radio-border-active: var(--zed-border);
+    --radio-border-selected-default: var(--zed-border);
+    --radio-border-selected-hover: color-mix(in srgb, var(--zed-border) 70%, transparent);
+    --radio-thumb-background-active: var(--zed-text-accent);
+
+    --slider-track-background: var(--zed-element-hover);
+
+    /* compact metrics: inputs 32 (zed's search bar min-h). --select-option-height stays 40: the
+       dropdown list is virtualised with a fixed 40px row in js */
+    --control-input-height-md: 32px;
+    --control-input-height-sm: 28px;
+}
+
+/* ---------- buttons (new system): radius 4, 14px/400, heights 22 / 28 / 32 ---------- */
+
+.button_a22cb0 {
+    border-radius: var(--zed-radius-sm);
+    font-weight: 400;
+    transition: none;
+
+    &:hover {
+        transition: none;
+    }
+}
+.button_a22cb0 .buttonChildren_a22cb0 {
+    gap: 4px;
+    font-size: var(--zed-ui-font-size);
+    font-weight: 400;
+    line-height: 18px;
+}
+.button_a22cb0 .buttonChildren_a22cb0 > div,
+.button_a22cb0 .buttonChildren_a22cb0 > span {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+/* ButtonSize::Default (22) */
+.xs_a22cb0 .buttonChildrenWrapper_a22cb0 {
+    min-height: 20px;
+    min-width: 20px;
+}
+.xs_a22cb0.hasText_a22cb0 .buttonChildrenWrapper_a22cb0 {
+    padding: 1px 3px;
+}
+/* ButtonSize::Medium (28) */
+.sm_a22cb0 .buttonChildrenWrapper_a22cb0 {
+    min-height: 26px;
+    min-width: 26px;
+}
+.sm_a22cb0.hasText_a22cb0 .buttonChildrenWrapper_a22cb0 {
+    padding: 3px 7px;
+}
+/* ButtonSize::Large (32) */
+.md_a22cb0 .buttonChildrenWrapper_a22cb0 {
+    min-height: 30px;
+    min-width: 30px;
+}
+.md_a22cb0.hasText_a22cb0 .buttonChildrenWrapper_a22cb0 {
+    padding: 5px 11px;
+}
+/* zed buttons hug their label; keep a little width so footers stay balanced */
+.md_a22cb0.hasText_a22cb0 {
+    min-width: var(--__button-min-width, 64px);
+}
+.button_a22cb0 .icon_a22cb0 {
+    width: 16px;
+    height: 16px;
+}
+.primary_a22cb0 .icon_a22cb0 {
+    color: var(--zed-text-accent);
+}
+.icon-only_a22cb0,
+.rounded_a22cb0 {
+    border-radius: var(--zed-radius-sm);
+}
+
+/* expressive: drop the animated glow, keep a flat tinted fill */
+.expressive_a22cb0 .expressiveBackground_a22cb0,
+.expressive_a22cb0 .expressiveHoverContainer_a22cb0 {
+    display: none;
+}
+.expressive_a22cb0 .expressiveFill_a22cb0 {
+    --__glow-amount: 0px;
+    border-radius: var(--zed-radius-sm);
+}
+.expressive_a22cb0:active .expressiveFill_a22cb0 {
+    --__glow-amount: 0px;
+}
+.expressive_a22cb0 .icon_a22cb0 {
+    color: var(--zed-text-accent);
+}
+
+/* ---------- buttons (old system) ---------- */
+
+.button__201d5:not(.lookBlank__201d5) {
+    border-radius: var(--zed-radius-sm);
+    font-size: var(--zed-ui-font-size);
+    font-weight: 400;
+    transition-duration: 0s;
+}
+.sizeSmall__201d5 {
+    height: 28px;
+    min-height: 28px;
+    padding: 3px 7px;
+}
+.sizeMedium__201d5,
+.sizeLarge__201d5 {
+    font-size: var(--zed-ui-font-size);
+    height: 32px;
+    min-height: 32px;
+    padding: 5px 11px;
+}
+.sizeMax__201d5 {
+    font-size: var(--zed-ui-font-size);
+}
+.lookFilled__201d5.colorRed__201d5 {
+    color: var(--red-2);
+
+    &:hover {
+        color: var(--red-1);
+    }
+}
+.lookFilled__201d5.colorGreen__201d5 {
+    color: var(--green-2);
+
+    &:hover {
+        color: var(--green-1);
+    }
+}
+.lookFilled__201d5.colorPrimary__201d5,
+.lookFilled__201d5.colorTransparent__201d5 {
+    border-color: var(--zed-border-variant);
+
+    &:hover {
+        border-color: var(--zed-border);
+    }
+}
+.lookOutlined__201d5.colorWhite__201d5,
+.lookOutlined__201d5.colorTransparent__201d5 {
+    border-color: var(--zed-border-variant);
+    color: var(--zed-text);
+
+    &:hover {
+        background-color: var(--zed-ghost-element-hover);
+        border-color: var(--zed-border);
+    }
+}
+/* links: accent text, underline on hover */
+.lookLink__201d5.colorBrand__201d5,
+.lookLink__201d5.colorLink__201d5 {
+    color: var(--zed-text-accent);
+}
+.lookLink__201d5.colorPrimary__201d5,
+.lookLink__201d5.colorTransparent__201d5 {
+    color: var(--zed-text-muted);
+
+    &:hover {
+        color: var(--zed-text);
+    }
+}
+.lookLink__201d5.colorRed__201d5 {
+    color: var(--red-2);
+}
+
+/* ---------- text inputs: radius 6, 1px border, focused = border colour only ---------- */
+
+.wrapper__72c38 {
+    --custom-input-border-radius: var(--zed-radius-md);
+    font-size: var(--zed-ui-font-size);
+}
+.wrapper__72c38.wrapper__72c38:not([data-read-only='true']):has(input:focus, textarea:focus),
+.selectField__0edde.selectField__0edde:not(.isInert__0edde):focus-within,
+.selectField__0edde.selectField__0edde:not(.isInert__0edde).isFocused__0edde {
+    outline: none;
+}
+.input__75098 {
+    font-size: var(--zed-ui-font-size);
+    padding-inline: 8px 4px;
+}
+.input__75098::placeholder {
+    color: var(--zed-text-placeholder);
+}
+.container__75098 .icon__75098 {
+    color: var(--zed-text-muted);
+}
+.container__75098 .icon__75098 svg {
+    width: 14px;
+    height: 14px;
+}
+.hasLeading__75098 {
+    padding-inline-start: 2px;
+}
+
+/* ---------- selects ---------- */
+
+.selectField__0edde .selectButton__0edde,
+.selectField__0edde .listBoxItemContent__2e223.inInput__2e223 {
+    min-height: 30px;
+}
+
+.selectField__0edde {
+    font-size: var(--zed-ui-font-size);
+}
+.selectField__0edde .chevronButton__0edde {
+    width: 28px;
+    color: var(--zed-text-muted);
+}
+.selectField__0edde .chevronIcon__0edde,
+.selectField__0edde .chevronIcon__0edde svg {
+    width: 16px;
+    height: 16px;
+}
+.selectButton__0edde .option__56a50 > div {
+    font-size: var(--zed-ui-font-size);
+}
+
+/* ---------- switches: zed's Switch, 32x20 track, 12px thumb ---------- */
+
+/* discord animates the track colour and thumb position with inline styles, hence !important */
+.container_a28278:has(input) .switchIndicator_a28278.switchIndicator_a28278 {
+    width: 32px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: var(--zed-element) !important;
+    border: 1px solid var(--zed-border) !important;
+    transition: none;
+
+    .thumb_a28278 {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        top: 0;
+        left: 0 !important;
+        transition: left 0.12s ease-out;
+
+        > rect {
+            fill: var(--zed-text) !important;
+            opacity: 0.5;
+            transition: none;
+        }
+    }
+}
+.container_a28278:has(input):hover .switchIndicator_a28278.switchIndicator_a28278 {
+    background-color: color-mix(in srgb, var(--zed-element), var(--zed-text) 5%) !important;
+}
+.container_a28278:has(input:checked) .switchIndicator_a28278.switchIndicator_a28278 {
+    background-color: color-mix(in srgb, var(--zed-text-accent) 40%, transparent) !important;
+    border-color: color-mix(in srgb, var(--zed-text-accent) 20%, transparent) !important;
+
+    .thumb_a28278 {
+        left: 12px !important;
+
+        > rect {
+            opacity: 1;
+        }
+    }
+}
+.container_a28278:has(input:checked):hover .switchIndicator_a28278.switchIndicator_a28278 {
+    background-color: color-mix(in srgb, color-mix(in srgb, var(--zed-text-accent) 40%, var(--zed-editor)), var(--zed-text) 16%) !important;
+}
+.container_a28278:has(input:disabled) .switchIndicator_a28278 .thumb_a28278 > rect {
+    opacity: 0.2;
+}
+.container_a28278:has(input:focus-visible) .switchIndicator_a28278 {
+    outline: 1px solid var(--zed-border-focused);
+    outline-offset: 2px;
+}
+
+/* ---------- checkboxes: 16px box, radius 2, accent check ---------- */
+
+.checkboxIndicator__714a9 {
+    border-radius: 2px;
+}
+.checkbox__09aca {
+    border-radius: 2px;
+}
+
+/* ---------- radios ---------- */
+
+.radioGroupOption__64e61 {
+    --custom-radio-size: 16px;
+    --custom-radio-text-start: calc(var(--custom-radio-size) + 8px);
+    font-size: var(--zed-ui-font-size);
+}
+.radioGroupOption__64e61 > .radioIndicator__64e61 {
+    inset-block-start: 2px;
+}
+.group__64e61 {
+    gap: 8px;
+}
+
+/* ---------- form fields (label + description + control) ---------- */
+
+.label__5a838 {
+    font-size: var(--zed-ui-font-size);
+    line-height: 20px;
+    font-weight: 400;
+}
+.description__5a838 {
+    font-size: var(--zed-ui-font-size-sm);
+    line-height: 18px;
+    color: var(--zed-text-muted) !important; /* inline var(--text-subtle) */
+}
+
+/* ---------- tab bars: friends header (Online / All / Pending / Add Friend) ---------- */
+
+/* zed's ToggleButton group: ghost 22px buttons, selected = element.selected */
+.topPill_aa8da2 .item_aa8da2 {
+    height: 22px;
+    margin: 0 1px;
+    padding: 0 6px;
+    border-radius: var(--zed-radius-sm);
+    font-size: var(--zed-ui-font-size);
+    font-weight: 400;
+    line-height: 22px;
+    color: var(--zed-text-muted);
+    background-color: var(--zed-ghost-element);
+
+    &:hover {
+        background-color: var(--zed-ghost-element-hover);
+        color: var(--zed-text);
+    }
+    &:active {
+        background-color: var(--zed-ghost-element-active);
+    }
+    &.selected_aa8da2,
+    &.selected_aa8da2:hover {
+        background-color: var(--zed-ghost-element-selected);
+        color: var(--zed-text);
+    }
+}
+/* "Add Friend" is the one accent action: Tinted(Accent). discord styles it with a 4-class selector */
+.tabBar__133bf .item_aa8da2.addFriend__133bf.addFriend__133bf.addFriend__133bf {
+    margin-left: 8px;
+    background-color: var(--ctl-accent-bg);
+    color: var(--zed-text-accent);
+
+    &:hover {
+        background-color: var(--ctl-accent-bg-hover);
+        color: var(--zed-text-accent);
+    }
+    &:active {
+        background-color: var(--ctl-accent-bg-active);
+    }
+}
+/* selected: midnight forces a solid accent with an id selector + !important */
+#app-mount .tabBar__133bf .addFriend__133bf[aria-selected='true'] {
+    background-color: var(--ctl-accent-bg-active) !important;
+    color: var(--zed-text-accent);
+}
+
+/* ---------- sliders: hairline track, soft accent fill, small light thumb (like the switch) ---------- */
+
+.slider_d061ce {
+    --grabber-size: 14px;
+    --bar-size: 4px;
+}
+.slider_d061ce .bar_d061ce {
+    border-radius: 2px;
+    background-color: var(--zed-element-hover);
+}
+.slider_d061ce .barFill_d061ce {
+    border: none;
+    background-color: color-mix(in srgb, var(--zed-text-accent) 60%, var(--zed-element));
+}
+.slider_d061ce .grabber_d061ce {
+    border: 1px solid var(--zed-border);
+    background-color: var(--zed-text);
+    box-shadow: var(--ovl-shadow);
+}
+.slider_d061ce .markDash_d061ce {
+    width: 1px;
+    border-radius: 0;
+    background-color: var(--zed-border);
+}
+.slider_d061ce .markValue_d061ce {
+    font-size: var(--zed-ui-font-size-sm);
+    font-weight: 400;
+    color: var(--zed-text-placeholder);
+}
+.slider_d061ce .defaultValue_d061ce .markValue_d061ce {
+    color: var(--zed-text-muted);
+}

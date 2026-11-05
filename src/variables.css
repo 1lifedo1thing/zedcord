@@ -1,0 +1,99 @@
+/* shared variables: zed's metrics, the midnight options this theme relies on, the forced density, and midnight's
+   palette mapped onto the zed colour tokens. the colours themselves (--zed-* tokens, accent scales) live in the
+   theme files: theme/zed.theme.css (one dark) and theme/flavors/*.theme.css */
+
+body {
+    --font: 'IBM Plex Sans';
+    --code-font: 'Lilex';
+    font-weight: 400;
+
+    /* zed metrics */
+    --zed-ui-font-size: 14px; /* LabelSize::Default at ui_font_size 16 */
+    --zed-ui-font-size-sm: 12px; /* LabelSize::Small */
+    --zed-ui-font-size-xs: 10px; /* LabelSize::XSmall: people rows' second line */
+    --zed-title-bar-height: 36px; /* zed's is 34; 36 centres the native macOS traffic lights */
+    --zed-tab-bar-height: 32px;
+    --zed-indent: 20px;
+    --zed-radius-sm: 4px;
+    --zed-radius-md: 6px;
+    --zed-radius-lg: 8px;
+    --zed-icon-size: 15px; /* every chrome icon; between zed's Small (14) and Medium (16) */
+    --zed-icon-button-size: 24px; /* zed's are 22 with 14px icons; 24/16 matches discord's glyphs */
+    --zed-chat-font-size: 15px; /* buffer_font_size: content one step above the 14px ui */
+
+    /* midnight options this theme relies on (non-default values only) */
+    --gap: 0px;
+    --divider-thickness: 1px;
+    --border-thickness: 1px;
+    --animations: off; /* midnight's list hover slide */
+    --list-item-transition: 0s;
+    --border-hover-transition: 0s;
+    --top-bar-height: var(--zed-title-bar-height);
+    --top-bar-button-position: off;
+    --top-bar-title-position: left;
+    --custom-window-controls: off;
+    --custom-dms-icon: off;
+    --chatbar-height: 40px; /* lines the composer up with the user panel (status bar) */
+    --bg-floating: var(--zed-elevated-surface);
+}
+
+/* density: discord's compact spacing scale and a smaller chat, forced so the theme looks the same whatever
+   accessibility > ui density, chat font scaling and message group spacing are set to. declared on the root,
+   where discord declares them, so its root-level derived variables recompute; :root:root outranks the
+   .density-* classes on <html>. */
+:root:root {
+    --space-xxs: var(--space-4);
+    --space-xs: var(--space-6);
+    --space-sm: var(--space-10);
+    --space-md: var(--space-12);
+    --space-lg: var(--space-16);
+    --space-xl: var(--space-20);
+    --space-xxl: var(--space-26);
+
+
+    --chat-avatar-size: 32px;
+    --custom-message-avatar-size: 32px;
+    --chat-markup-line-height: 21px;
+    --custom-message-spacing-vertical-container-cozy: 1px; /* discord's 2px above and below every message */
+    --chat-input-icon-size: 16px;
+}
+
+/* midnight palette -> zed */
+:root {
+    --text-0: var(--zed-editor); /* text on colored elements */
+    --text-1: var(--zed-text);
+    --text-2: var(--zed-text);
+    --text-3: var(--zed-text);
+    --text-4: var(--zed-text-muted);
+    --text-5: var(--zed-text-placeholder);
+    --bg-1: var(--zed-element-active);
+    --bg-2: var(--zed-element-hover);
+    --bg-3: var(--zed-surface);
+    --bg-4: var(--zed-editor);
+    --hover: var(--zed-element-hover);
+    --active: var(--zed-element-selected);
+    --active-2: color-mix(in srgb, var(--zed-element-active), var(--zed-text) 7%);
+    --message-hover: var(--zed-active-line);
+
+    --accent-1: var(--zed-text-accent);
+    --accent-2: var(--blue-2);
+    --accent-3: var(--blue-3);
+    --accent-4: var(--blue-4);
+    --accent-5: var(--blue-5);
+    --accent-new: var(--red-2);
+    --mention: color-mix(in srgb, var(--zed-text-accent) 10%, transparent);
+    --mention-hover: color-mix(in srgb, var(--zed-text-accent) 15%, transparent);
+    --reply: color-mix(in srgb, var(--yellow-2) 10%, transparent);
+    --reply-hover: color-mix(in srgb, var(--yellow-2) 15%, transparent);
+
+    --online: var(--green-2);
+    --dnd: var(--red-2);
+    --idle: var(--yellow-2);
+    --streaming: var(--purple-2);
+    --offline: var(--zed-text-placeholder);
+
+    --border-light: var(--zed-border-variant);
+    --border: var(--zed-border);
+    --border-hover: var(--zed-border);
+    --button-border: var(--zed-border);
+}

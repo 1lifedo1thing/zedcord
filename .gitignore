@@ -1,0 +1,9 @@
+node_modules/
+.env
+.theme-dev/
+.DS_Store
+shots/
+
+# zed reference material copied from zed's repo / screenshots; kept local, not redistributed
+research/zed-icons/
+research/*.png
