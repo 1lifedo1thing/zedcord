@@ -145,7 +145,7 @@ function toHex([L, C, H]) {
 }
 
 // server tiles: `background`, else the resting button fill, if it stands out from the panels by 0.03 OKLCH
-// lightness (one dark's tiles are 0.05 above; rosé pine's background is the panel colour, tokyo night's only 0.02 off)
+// lightness (one dark's tiles are 0.05 above; rosé pine's background is the panel colour)
 lines.push('');
 const panel = hex(style['panel.background']);
 const visible = (h) => h && panel && !h.slice(7) && Math.abs(oklch(h)[0] - oklch(panel)[0]) >= 0.03;
