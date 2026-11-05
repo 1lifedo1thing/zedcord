@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Prints the :root block of a flavor from a Zed theme JSON: every --zed-* token from its Zed key, and the accent
-// scales (shade 2 = the theme's colour, 1 and 3-5 keep One Dark's OKLCH lightness and chroma steps).
+// scales (shade 2 = the theme's colour, 1 and 3-5 keep One Dark's OKLCH lightness and chroma steps, gamut-mapped).
 //
 //   node scripts/zed-flavor.mjs <theme.json> ["Theme Name"]
 //
@@ -101,7 +101,8 @@ if (bg && bg !== hex(style['panel.background'])) out('guild-icon', bg, 'backgrou
 else if (ghost && !ghost.endsWith('00')) out('guild-icon', ghost, 'CHECK: background is the panel colour; ghost_element.background');
 else out('guild-icon', null, 'CHECK: background is the panel colour and buttons have no resting fill; pick one');
 
-// accent scales from the status colours. purple has no status key: terminal magenta (one dark's own is its keyword)
+// accent scales from the status colours. purple has no status key: terminal magenta, refined below (one dark's own
+// is its keyword)
 const oneDark = {
     red: ['#e0959a', '#d07277', '#c45a60', '#b4474d', '#9c3a40'],
     green: ['#b9d29e', '#a1c181', '#8cae6a', '#779a56', '#638546'],
@@ -131,18 +132,49 @@ function oklch(h) {
     const B = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s;
     return [L, Math.hypot(A, B), Math.atan2(B, A)];
 }
-function toHex([L, C, H]) {
+function linearRgb([L, C, H]) {
     const [A, B] = [C * Math.cos(H), C * Math.sin(H)];
     const [l, m, s] = [L + 0.3963377774 * A + 0.2158037573 * B, L - 0.1055613458 * A - 0.0638541728 * B, L - 0.0894841775 * A - 1.291485548 * B].map((x) => x ** 3);
-    const rgb = [
+    return [
         4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
         -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
         -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s,
     ];
-    return '#' + rgb.map((c) => fromLinear(c).toString(16).padStart(2, '0')).join('');
+}
+function toHex([L, C, H]) {
+    // out of srgb (saturated bases like gruvbox's red, darkened): lower the chroma until it fits, keeping lightness
+    // and hue, instead of clipping channels (which turns the shade pure red, or shifts its hue)
+    const fits = (c) => linearRgb([L, c, H]).every((x) => x >= -1e-4 && x <= 1 + 1e-4);
+    let lo = 0;
+    let hi = C;
+    if (!fits(C)) for (let i = 0; i < 30; i++) fits((lo + hi) / 2) ? (lo = (lo + hi) / 2) : (hi = (lo + hi) / 2);
+    else lo = C;
+    return '#' + linearRgb([L, lo, H]).map((c) => fromLinear(c).toString(16).padStart(2, '0')).join('');
+}
+
+// purple: terminal magenta, or its bright variant when that's the tier the other accents are in (gruvbox's
+// error, success and warning are its bright colours). some themes' "magenta" isn't purple at all (ayu's is cyan):
+// then the purple-to-pink syntax colour nearest the other accents' lightness, flagged.
+const isPurple = (h) => {
+    const deg = ((oklch(h)[2] * 180) / Math.PI + 360) % 360;
+    return deg >= 280 || deg < 10;
+};
+const nearest = (candidates) => {
+    const others = ['red', 'green', 'blue', 'yellow'].filter((c) => bases[c]).map((c) => oklch(bases[c])[0]);
+    const mean = others.reduce((a, b) => a + b, 0) / others.length;
+    return candidates.sort((a, b) => Math.abs(oklch(a)[0] - mean) - Math.abs(oklch(b)[0] - mean))[0];
+};
+let purpleNote = null;
+const magentas = [bases.purple, hex(style['terminal.ansi.bright_magenta'])].filter((h) => h && isPurple(h));
+if (magentas.length) bases.purple = nearest(magentas);
+else {
+    const syntaxPurples = [...new Set(Object.values(syntax).map((s) => hex(s?.color)).filter((h) => h && !h.slice(7) && isPurple(h)))];
+    purpleNote = `CHECK: terminal magenta ${bases.purple} isn't purple; ${syntaxPurples.length ? `nearest purple syntax colour of ${syntaxPurples.join(', ')}` : 'pick one'}`;
+    bases.purple = syntaxPurples.length ? nearest(syntaxPurples) : null;
 }
 
 lines.push('');
+if (purpleNote) lines.push(`    /* ${purpleNote} */`);
 for (const [colour, shades] of Object.entries(oneDark)) {
     const base = bases[colour];
     if (!base) {
