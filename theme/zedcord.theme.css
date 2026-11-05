@@ -1,6 +1,6 @@
 /**
  * @name zedcord
- * @description discord, but it's zed (one dark). built on midnight-discord.
+ * @description discord, but it's zed-themed
  * @author refact0r
  * @version 0.1.0
  * @invite nz87hXyvcy
@@ -11,10 +11,8 @@
  * @donate https://ko-fi.com/refact0r
 */
 
-/* zed ships IBM Plex Sans (.ZedSans) and Lilex (.ZedMono), and only these weights */
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&family=Lilex:wght@400;700&display=swap');
 
-/* midnight base + zed layer (inlined by scripts/build.js) */
 @import url('https://refact0r.github.io/zedcord/build/zedcord.css');
 
 /* zed "One Dark" (assets/themes/one/one.json). each token's comment is its zed theme key */
