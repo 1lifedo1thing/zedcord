@@ -2,7 +2,7 @@
 
 # zedcord
 
-discord, but it's [zed](https://zed.dev). built on [midnight](https://github.com/refact0r/midnight-discord).
+discord, but it's [zed](https://zed.dev). discord announced they're moving to [gpui](https://www.gpui.rs), zed's ui framework, so i figured it should look the part. built on [midnight](https://github.com/refact0r/midnight-discord).
 
 <img src="https://raw.githubusercontent.com/refact0r/zedcord/main/assets/compare/one-dark.png">
 
