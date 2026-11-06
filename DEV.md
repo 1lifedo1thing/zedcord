@@ -110,7 +110,10 @@ lighter surface, its `border.variant` is brighter than `border`, and its subtle 
 
 ## Live loop (Vesktop over CDP)
 
-Vesktop is running with `--remote-debugging-port=9229`. `scripts/cdp.mjs` talks to it:
+Vesktop has to be running with `--remote-debugging-port=9229` (`curl -s http://127.0.0.1:9229/json/list` lists a
+discord.com page). Restarting it closes the user's Discord, so ask first; then `osascript -e 'quit app "Vesktop"'`
+and `open -a Vesktop --args --remote-debugging-port=9229` (`--args` is silently ignored while Vesktop is still
+running, quitting or starting, so check the port afterwards). `scripts/cdp.mjs` talks to it:
 
 ```bash
 node scripts/cdp.mjs apply                         # build + inject (replaces previous injection); --flavor rose-pine
@@ -119,14 +122,19 @@ node scripts/cdp.mjs shot shots/x.png '.selector' --pad 8 --width 900   # one el
 node scripts/cdp.mjs shot shots/x.png --clip x,y,w,h                    # CSS-px region
 node scripts/cdp.mjs eval '<js>'                   # evaluate in Discord, awaits promises, prints JSON
 node scripts/cdp.mjs nav /channels/@me             # client-side navigation (injection survives)
-node scripts/cdp.mjs click '<selector>' | hover '<selector>' | key Escape
+node scripts/cdp.mjs click '<selector>' | hover '<selector>' | mouse '<selector>' [right] | key Escape
 node scripts/cdp.mjs shot shots/x.png --clip x,y,w,h --hover '<selector>'  # force :hover (your real cursor wins over `hover`)
 node scripts/cdp.mjs eval "$(node scripts/dom.js '<selector>' 10 80)"   # compact DOM tree with boxes
 ```
 
 `apply` installs midnight's `window.__themeDev` helpers too: `compare(sel)` (theme on vs off),
 `discordRules(sel, prop)` (what Discord's own CSS sets), `trace(sel, prop)`, `placeholders()`, `cssVar()`.
-See `~/Documents/midnight-discord/docs/BROWSER_DEV.md` for details and the "fixing a visual bug" method.
+See `~/Documents/midnight-discord/docs/BROWSER_DEV.md` for details and the "fixing a visual bug" method;
+`docs/DESKTOP_DEV.md` there is this loop for midnight and system24, whose `cdp.mjs` is this one without flavors.
+
+`apply` also writes the installed copies (`DEV_OUTPUT_PATH`, and each flavor beside it), so changes persist across
+restarts. The injection survives client-side navigation but not a reload. Measure in a separate `eval` from the
+`apply`: in the same breath the layout can still be the old one.
 
 Rules of thumb:
 
@@ -145,8 +153,14 @@ Rules of thumb:
   header 24px), friends rows (61px, section titles 50px). Shrink those visually (the server list is `zoom`ed, list
   avatars `transform: scale`d) instead of resizing them.
 - Density is forced in `src/variables.css` (`:root:root`), so Discord's UI density / chat font size / group
-  spacing settings don't change the theme. Vesktop's zoom is the user's call (it was set to 81.25% to match Zed at `ui_font_size: 13`).
+  spacing settings don't change the theme. Vesktop's zoom is the user's call; `shot`, `hover` and `mouse` convert for it.
 - Use the `--zed-*` tokens, never raw hex, outside the theme files (tints are `color-mix()` of a token).
-- Verify with a screenshot after each change; measure with `eval` when alignment matters.
-- The window is the user's real Discord: they may be using it at the same time. Close anything you open
-  (`key Escape`), don't send messages, don't change settings or click destructive actions.
+- The window is the user's real Discord, and they may be using it. Default: `apply`, read the DOM and computed
+  styles of what's already on screen, then say what changed and what to look at, and ask them to verify (or to
+  open the state you need). Don't run visual checks of your own (screenshot passes, navigating away, opening menus
+  or test UI, forced hovers, waiting for them to go idle) unless they ask. When they do, close anything you open
+  (`key Escape`), and don't send messages, change settings or click destructive actions. Measure with `eval` when
+  alignment matters.
+- Several agents share one Vesktop, and midnight's and system24's `cdp.mjs` inject into the same style element:
+  the last `apply` wins. `build/` comes from the working tree, which may hold another agent's unfinished edits, so
+  a commit (and the build regenerated for it) should contain only your own changes.
